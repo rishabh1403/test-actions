@@ -1,0 +1,20 @@
+name: automerge
+on:
+  schedule:
+    # The timezone used for Github Actions crons is UTC
+    # (https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows#schedule).
+    # We are running this at roughly midnight PT (FYI it technically won't be
+    # midnight PT part of the year because of daylight savings) so that we
+    # deploy when the least amount of users are on the app. This is a safe
+    # assumption since we are only expecting US users, given how coupled
+    # LoanCrate is to US mortgage regulations.
+    - cron: "0 8 * * *"
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: automerge
+        uses: "pascalgn/automerge-action@v0.13.0"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: "automerge,!wip"

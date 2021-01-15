@@ -1,0 +1,26 @@
+name: Pull Request from Master to Production
+on:
+  push:
+    branches:
+      - master
+jobs:
+  auto-pull-request:
+    name: PullRequestAction
+    runs-on: ubuntu-latest
+    steps:
+      - name: pull-request-action
+        uses: vsoch/pull-request-action@1.0.6
+        env:
+          GITHUB_TOKEN:
+            ${{ secrets.GITHUB_TOKEN }}
+            # Github actions don't allow setting env variables e.g. set env
+            # PULL_REQUEST_NUMBER to the actual pull request number. To be able
+            # to set env variables in the action we use
+            # ACTIONS_ALLOW_UNSECURE_COMMANDS flag. I've checked the
+            # source code of the action to ensure there's nothing sketchy. The
+            # flag is temporary until the action updates its source code to
+            # adopt new way to set env variables. See
+            # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+          BRANCH_PREFIX: "master"
+          PULL_REQUEST_BRANCH: "production"
