@@ -2,7 +2,7 @@ name: PR Labeler
 on:
   pull_request:
     branches:
-      - master
+      - production
 jobs:
   pr-labeler:
     runs-on: ubuntu-latest
